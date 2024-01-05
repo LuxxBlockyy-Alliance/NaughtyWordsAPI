@@ -7,6 +7,15 @@ console = Console()
 app = Flask(__name__)
 
 
+@app.route('/update', methodes=['POST'])
+async def update():
+    data = request.get_json()
+    if data:
+        return jsonify({'error': 'No input data needed'}), 400
+    elapsed_time = await src.tools.update()
+    return jsonify({'result': elapsed_time}), 200
+
+
 @app.route('/api', methods=['POST'])
 async def check_json():
     data = request.get_json()

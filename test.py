@@ -22,7 +22,6 @@ class Countdown:
             self.time = time.strftime("%H:%M:%S:%MS", self.time)
             return self.time
 
-
 def send_data(message):
     url = "http://127.0.0.1:8001/api"
     headers = {'Content-Type': 'application/json'}

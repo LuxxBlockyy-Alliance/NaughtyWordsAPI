@@ -2,12 +2,14 @@ import re
 
 import aiosqlite
 import asyncio
+from git import Repo
 import aiofiles
 import os
 import time
 from rich.console import Console
 
 console = Console()
+data_path = "./words/"
 
 
 # ["ar", "cs", "da", "de", "en", "eo", "es", "fa", "fi", "fil", "fr", "fr-CA-u-sd-caqc", "hi", "hu", "it", "ja",
@@ -32,6 +34,22 @@ class Countdown:
             return self.end_time - self.start_time
 
 
+async def clone_repo(url, destination):
+    try:
+        repo = Repo.clone_from(url, destination)
+        print(f"Successfully cloned the repository: {url}")
+    except Exception as e:
+        print(f"Error cloning the repository: {e}")
+
+
+async def update():
+    if os.path.exists(data_path):
+        os.remove(data_path)
+    await clone_repo("https://github.com/LuxxBlockyy-Alliance/NaughtyWordsAPI.git", data_path)
+    elapsed_time = await write_data("./words.db", data_path, None)
+    console.log(f"[[green bold]![/green bold]] Update complete in {elapsed_time}")
+
+
 async def get_column(database_name: str, table_name: str, column: str):
     conn = await aiosqlite.connect(database_name)
     cursor = await conn.cursor()
@@ -49,7 +67,7 @@ async def get_column(database_name: str, table_name: str, column: str):
         return data
 
 
-async def write_data(db_path, path: str = "./words/", file_names: list = None):
+async def write_data(db_path, path: str = f"{data_path}", file_names: list = None):
     if file_names is None:
         file_names = ["ar", "cs", "da", "de", "en", "eo", "es", "fa", "fi", "fil", "fr", "fr-CA-u-sd-caqc", "hi", "hu",
                       "it", "ja", "kab", "ko", "nl", "no", "pl", "pt", "ru", "sv", "th", "tlh", "tr", "zh"]
@@ -70,7 +88,7 @@ async def write_data(db_path, path: str = "./words/", file_names: list = None):
                 await connection.commit()
                 await connection.close()
     countdown.count_stop()
-    print(countdown.counted_time())
+    return countdown.counted_time()
 
 
 async def scan_db(db_path, message: str):
