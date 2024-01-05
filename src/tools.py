@@ -45,7 +45,7 @@ async def clone_repo(url, destination):
 async def update():
     if os.path.exists(data_path):
         os.remove(data_path)
-    await clone_repo("https://github.com/LuxxBlockyy-Alliance/NaughtyWordsAPI.git", data_path)
+    await clone_repo("https://github.com/blockplacer4/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words.git", data_path)
     elapsed_time = await write_data("./words.db", data_path, None)
     console.log(f"[[green bold]![/green bold]] Update complete in {elapsed_time}")
 
