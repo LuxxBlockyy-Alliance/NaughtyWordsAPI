@@ -97,9 +97,10 @@ async def scan_db(db_path, message: str):
     result = None
     for row in await get_column(db_path, "words", "word"):
         try:
-            result = re.search(row[0], message)
-            if result:
-                break
+            if row[0] == message:
+                result = re.search(row[0], message.lower())
+                if result:
+                    break
         except Exception as e:
             console.log(e)
     if result:
