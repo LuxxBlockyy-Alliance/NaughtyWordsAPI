@@ -7,7 +7,7 @@ console = Console()
 app = Flask(__name__)
 
 
-@app.route('/update', methodes=['POST'])
+@app.route('/update', methods=['POST'])
 async def update():
     data = request.get_json()
     if data:
