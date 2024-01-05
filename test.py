@@ -22,8 +22,9 @@ class Countdown:
             self.time = time.strftime("%H:%M:%S:%MS", self.time)
             return self.time
 
+
 def send_data(message):
-    url = "http://127.0.0.1:8001/api"
+    url = "http://195.62.46.112:3331/api"
     headers = {'Content-Type': 'application/json'}
     data = {'message': f'{message}'}
     response = requests.post(url, json=data, headers=headers)
@@ -33,8 +34,10 @@ def send_data(message):
         print(f'Error: {response.json()}')
 
 
-countdown = Countdown()
-countdown.count_start()
-send_data("fuck")
-countdown.count_stop()
-print(f"{countdown.counted_time()}")
+while True:
+    message = input("Enter message: ")
+    countdown = Countdown()
+    countdown.count_start()
+    send_data(message)
+    countdown.count_stop()
+    print(f"{countdown.counted_time()}")
