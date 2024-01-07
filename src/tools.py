@@ -102,6 +102,7 @@ async def scan_db(db_path, message: str):
                     return False
                 else:
                     result = re.search(row[0], message.lower())
+                    console.log(message.lower())
                     if result:
                         break
         except Exception as e:
