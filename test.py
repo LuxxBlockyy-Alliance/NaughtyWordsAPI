@@ -38,6 +38,6 @@ while True:
     message = input("Enter message: ")
     countdown = Countdown()
     countdown.count_start()
-    send_data(message)
+    send_data(message.lower())
     countdown.count_stop()
     print(f"{countdown.counted_time()}")
